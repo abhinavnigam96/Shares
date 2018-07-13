@@ -1,0 +1,3 @@
+# Module tut_gwt
+# RPC service class, partial path of RPC policy file
+com.abhinav.example.client.GreetingService, C71C7C4B56B3325C3F6068D58A9F6438.gwt.rpc
