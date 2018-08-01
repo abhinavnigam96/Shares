@@ -40,6 +40,7 @@ public class Tut_gwt implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send");
+		final Button navigateButton = new Button("Navigate");
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
@@ -52,10 +53,14 @@ public class Tut_gwt implements EntryPoint {
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
+		RootPanel.get("navigateButtonContainer").add(navigateButton);
 
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		nameField.selectAll();
+
+		navigateButton.setEnabled(true);
+		navigateButton.setFocus(true);
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
