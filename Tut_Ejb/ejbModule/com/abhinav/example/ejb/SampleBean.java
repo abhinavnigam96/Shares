@@ -1,5 +1,9 @@
 package com.abhinav.example.ejb;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -13,7 +17,7 @@ import com.abhinav.entity.Actor;
 /**
  * Session Bean implementation class SampleBean
  */
-@Stateless
+@Stateless(mappedName = "ejb/SampleBean")
 @TransactionManagement(TransactionManagementType.CONTAINER)
 public class SampleBean implements SampleBeanLocal {
 	@PersistenceContext(unitName = "tut_PU")
@@ -35,4 +39,22 @@ public class SampleBean implements SampleBeanLocal {
 		return "hello" + name;
 	}
 
+	@SuppressWarnings("unchecked")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public Set<String> getFirstNameSuggestions(String root) {
+		Set<String> suggestions = new HashSet<String>();
+		List<String> resultList = entityManager.createQuery(
+			"select distinct a.firstName from Actor a where a.firstName like ?")
+			.setParameter(1, root + "%")
+			.setMaxResults(5)
+			.getResultList();
+
+		for (String name : resultList) {
+			suggestions.add(name);
+		}
+
+		return suggestions;
+	}
+
 }
+

@@ -1,10 +1,16 @@
 package com.abhinav.example.server;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import javax.ejb.EJB;
 
 import com.abhinav.example.client.GreetingService;
 import com.abhinav.example.ejb.SampleBeanLocal;
 import com.abhinav.example.shared.FieldVerifier;
+import com.abhinav.example.shared.ItemSuggestion;
+import com.google.gwt.user.client.ui.SuggestOracle.Request;
+import com.google.gwt.user.client.ui.SuggestOracle.Response;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
@@ -32,7 +38,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 
 		_sampleBean.getHelloEjb(input);
 		return "Hello, " + input + "!<br><br>I am running " + serverInfo + ".<br><br>It looks like you are using:<br>"
-				+ userAgent;
+		+ userAgent;
 	}
 
 	private String escapeHtml(String html) {
@@ -40,5 +46,21 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements Greetin
 			return null;
 		}
 		return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+	}
+
+	@Override
+	public Response getSuggestion(Request request) {
+		Response response = new Response();
+		String query = request.getQuery();
+
+		Set<String> firstNameSuggestions = _sampleBean.getFirstNameSuggestions(query);
+		ArrayList<ItemSuggestion> suggestions = new ArrayList<>();
+		for (String name : firstNameSuggestions) {
+
+			ItemSuggestion suggestion = new ItemSuggestion(name);
+			suggestions.add(suggestion);
+		}
+		response.setSuggestions(suggestions);
+		return response;
 	}
 }

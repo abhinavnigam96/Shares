@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -26,7 +27,7 @@ public class Tut_gwt implements EntryPoint {
 	 * returns an error.
 	 */
 	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network " + "connection and try again.";
+		+ "attempting to contact the server. Please check your network " + "connection and try again.";
 
 	/**
 	 * Create a remote service proxy to talk to the server-side Greeting
@@ -40,7 +41,10 @@ public class Tut_gwt implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		final Button sendButton = new Button("Send");
-		final Button navigateButton = new Button("Navigate");
+
+		SimpleSuggestOracle suggestion = new SimpleSuggestOracle();
+
+		SuggestBox suggestBox = new SuggestBox(suggestion);
 		final TextBox nameField = new TextBox();
 		nameField.setText("GWT User");
 		final Label errorLabel = new Label();
@@ -53,14 +57,13 @@ public class Tut_gwt implements EntryPoint {
 		RootPanel.get("nameFieldContainer").add(nameField);
 		RootPanel.get("sendButtonContainer").add(sendButton);
 		RootPanel.get("errorLabelContainer").add(errorLabel);
-		RootPanel.get("navigateButtonContainer").add(navigateButton);
+		RootPanel.get("suggestBoxContainer").add(suggestBox);
 
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		nameField.selectAll();
 
-		navigateButton.setEnabled(true);
-		navigateButton.setFocus(true);
+		suggestBox.setEnabled(true);
 
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
